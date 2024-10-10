@@ -1,24 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect, useCallback } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { UserProvider } from './context/UserContext';
+import AppNavbar from './components/AppNavbar';
+import Container from 'react-bootstrap/Container'
+import Home from './pages/Home';
+import Register from './pages/Register';
+import Login from './pages/Login';
+import Logout from './pages/Logout';
+import AddMovie from './pages/AddMovie';
+import Movies from './pages/Movies';
+import {jwtDecode} from 'jwt-decode';
 
 function App() {
+  const [user, setUser] = useState({
+    id: null,
+    isAdmin: null
+  });
+
+  const unsetUser  = () => {
+    localStorage.clear();
+  };
+
+useEffect(() => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    setUser({
+      id: decodedToken['id'], 
+      isAdmin: decodedToken.isAdmin
+    });
+  }
+}, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <UserProvider value={{ user, setUser, unsetUser  }}>
+        <Router>
+          <AppNavbar />
+          <Container>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/logout" element={<Logout />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/addMovie" element={<AddMovie />} />
+              <Route path="/getMovies" element={<Movies />} />
+            </Routes>
+          </Container>
+        </Router>
+      </UserProvider>
+    </>
   );
 }
 
