@@ -3,6 +3,7 @@ import MovieCard from '../components/MovieCard';
 import UserContext from '../context/UserContext';
 import { Row, Col, Spinner, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import AdminView from '../components/AdminView';
 
 export default function Movies() {
   const { user } = useContext(UserContext); 
@@ -40,19 +41,26 @@ export default function Movies() {
       {user ? (
         <>
           {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
-          {movies.length > 0 ? (
-            <>
-              <h1 className='text-center mt-5'>Movies</h1>
-              <Row> 
-                {movies.map(movie => (
-                  <Col md={3} key={movie._id}>
-                    <MovieCard movie={movie} />
-                  </Col>
-                ))}
-              </Row>
-            </>
+          
+          {user.isAdmin ? (
+            <AdminView movie={movies} fetchData={fetchData} />
           ) : (
-            <h1>No Movies Available</h1>
+            <>
+              {movies.length > 0 ? (
+                <>
+                  <h1 className='text-center mt-5'>Movies</h1>
+                  <Row> 
+                    {movies.map(movie => (
+                      <Col md={3} key={movie._id}>
+                        <MovieCard movie={movie} />
+                      </Col>
+                    ))}
+                  </Row>
+                </>
+              ) : (
+                <h1>No Movies Available</h1>
+              )}
+            </>
           )}
         </>
       ) : (

@@ -8,29 +8,32 @@ import UserContext from '../context/UserContext';
 export default function AppNavbar() {
     const { user } = useContext(UserContext);
 
-    console.log('User:', user);
-
     return (
-        <Navbar expand="lg" className="bg-body-tertiary">
+        <Navbar expand="lg" className="bg-dark text-white">
             <Container>
-                <Navbar.Brand as={NavLink} to="/">Movie App</Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Brand as={NavLink} to="/" className="fw-bold text-white">Movie App</Navbar.Brand>
+                <Navbar.Toggle 
+                    aria-controls="basic-navbar-nav" 
+                    className="border-0 bg-white"
+                >
+                    <span className="navbar-toggler-icon bg-white"></span>
+                </Navbar.Toggle>
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="me-auto">
-                        <Nav.Link as={NavLink} to="/">Home</Nav.Link>
-                        <Nav.Link as={NavLink} to="/getMovies">Movies</Nav.Link> {/* Moved here */}
+                    <Nav className="ms-auto">
+                        <Nav.Link as={NavLink} to="/" className="mx-2 text-white">Home</Nav.Link>
+                        <Nav.Link as={NavLink} to="/getMovies" className="mx-2 text-white">Movies</Nav.Link> 
 
                         {user && user.id !== null ? (
                             <>
                                 {user.isAdmin && (
-                                    <Nav.Link as={NavLink} to="/addMovie">Add Movie</Nav.Link>
+                                    <Nav.Link as={NavLink} to="/addMovie" className="mx-2 text-white">Add Movie</Nav.Link>
                                 )}
-                                <Nav.Link as={NavLink} to="/logout">Logout</Nav.Link>
+                                <Nav.Link as={NavLink} to="/logout" className="mx-2 text-white">Logout</Nav.Link>
                             </>
                         ) : (
                             <>
-                                <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
-                                <Nav.Link as={NavLink} to="/register">Register</Nav.Link>
+                                <Nav.Link as={NavLink} to="/login" className="mx-2 text-white">Login</Nav.Link>
+                                <Nav.Link as={NavLink} to="/register" className="mx-2 text-white">Register</Nav.Link>
                             </>
                         )}
                     </Nav>

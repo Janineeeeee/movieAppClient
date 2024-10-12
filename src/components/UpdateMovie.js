@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Form, Button, Modal } from 'react-bootstrap';
 import { Notyf } from 'notyf';
 import UserContext from '../context/UserContext';
@@ -7,114 +7,89 @@ export default function UpdateMovie({ show, handleClose, movie, fetchData }) {
   const { user } = useContext(UserContext);
   const notyf = new Notyf();
 
-  const [title, setTitle] = useState(movie.title);
-  const [description, setDescription] = useState(movie.description);
-  const [year, setYear] = useState(movie.year);
-  const [genre, setGenre] = useState(movie.genre);
-  const [director, setDirector] = useState(movie.director);
+  // Initialize state with movie details
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    year: '',
+    genre: '',
+    director: '',
+  });
 
-  const updateMovie = (e) => {
+  useEffect(() => {
+    if (movie) {
+      setFormData({
+        title: movie.title,
+        description: movie.description,
+        year: movie.year,
+        genre: movie.genre,
+        director: movie.director,
+      });
+    }
+  }, [movie]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const updateMovie = async (e) => {
     e.preventDefault();
 
-    const updatedMovie = {
-      title,
-      description,
-      year,
-      genre,
-      director,
-    };
-
-    fetch(`https://movieapp-api-lms1.onrender.com/movies/updateMovie/${movie._id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify(updatedMovie),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) {
-          notyf.error(`Unsuccessful Movie Update: ${data.message}`);
-        } else {
-          notyf.success('Movie Updated Successfully!');
-          fetchData();
-          handleClose();
-        }
-      })
-      .catch((error) => {
-        console.error('Update movie error:', error);
+    try {
+      const response = await fetch(`https://movieapp-api-lms1.onrender.com/movies/updateMovie/${movie._id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(formData),
       });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to update movie');
+      }
+
+      notyf.success('Movie Updated Successfully!');
+      fetchData(); 
+      handleClose();
+    } catch (error) {
+      notyf.error(`Unsuccessful Movie Update: ${error.message}`);
+      console.error('Update movie error:', error);
+    }
   };
 
   return (
-    <>
-      {user.isAdmin ? (
-        <Modal show={show} onHide={handleClose}>
-          <Form onSubmit={updateMovie}>
-            <Modal.Header closeButton style={{ backgroundColor: 'black', color: 'white' }}>
-              <Modal.Title>Update Movie</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <Form.Group controlId="movieTitle">
-                <Form.Label>Title</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  required
-                />
-              </Form.Group>
-              <Form.Group controlId="movieDescription">
-                <Form.Label>Description</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  required
-                />
-              </Form.Group>
-              <Form.Group controlId="movieYear">
-                <Form.Label>Year</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={year}
-                  onChange={(e) => setYear(e.target.value)}
-                  required
-                />
-              </Form.Group>
-              <Form.Group controlId="movieGenre">
-                <Form.Label>Genre</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={genre}
-                  onChange={(e) => setGenre(e.target.value)}
-                  required
-                />
-              </Form.Group>
-              <Form.Group controlId="movieDirector">
-                <Form.Label>Director</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={director}
-                  onChange={(e) => setDirector(e.target.value)}
-                  required
-                />
-              </Form.Group>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <Button variant="dark" type="submit">
-                Update
-              </Button>
-            </Modal.Footer>
-          </Form>
-        </Modal>
-      ) : (
-        <div>You do not have permission to update movies.</div>
-      )}
-    </>
+    <Modal show={show} onHide={handleClose}>
+      <Form onSubmit={updateMovie}>
+        <Modal.Header closeButton style={{ backgroundColor: 'black', color: 'white' }}>
+          <Modal.Title>Update Movie</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {['title', 'description', 'year', 'genre', 'director'].map((field, idx) => (
+            <Form.Group controlId={`movie${field.charAt(0).toUpperCase() + field.slice(1)}`} key={idx}>
+              <Form.Label>{field.charAt(0).toUpperCase() + field.slice(1)}</Form.Label>
+              <Form.Control
+                type={field === 'year' ? 'number' : 'text'}
+                name={field}
+                value={formData[field]}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          ))}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="dark" type="submit">
+            Update
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </Modal>
   );
 }

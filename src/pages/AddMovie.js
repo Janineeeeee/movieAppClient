@@ -110,7 +110,7 @@ export default function AddMovie() {
             onChange={e => setGenre(e.target.value)}
           />
         </Form.Group>
-        <Button variant="primary" type="submit" className="my-5">Submit</Button>
+        <Button variant="primary" type="submit" className="my-5">Add Movie</Button>
       </Form>
     </>
   );
