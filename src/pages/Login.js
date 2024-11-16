@@ -1,16 +1,16 @@
 import { useState, useEffect, useContext } from 'react';
-import { Container, Form, Button, Card } from 'react-bootstrap';
+import { Container, Form, Button, Card, Row, Col } from 'react-bootstrap';
 import { Link, Navigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import { Notyf } from 'notyf';
-import {jwtDecode} from 'jwt-decode'; 
+import { jwtDecode } from 'jwt-decode';
 
 export default function Login() {
     const notyf = new Notyf();
     const { user, setUser } = useContext(UserContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [isActive, setIsActive] = useState(false); // Default to false
+    const [isActive, setIsActive] = useState(false);
 
     const authenticate = async (e) => {
         e.preventDefault();
@@ -56,42 +56,54 @@ export default function Login() {
             {user.id !== null ? (
                 <Navigate to="/getMovies" />
             ) : (
-                <Card className="w-75 mx-auto">
-                    <Card.Body>
-                        <Card.Title>Login</Card.Title>
-                        <Form onSubmit={authenticate}>
-                            <Form.Group controlId="email" className="mb-3">
-                                <Form.Label>Email address</Form.Label>
-                                <Form.Control
-                                    type="email"
-                                    placeholder="Enter email"
-                                    required
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </Form.Group>
+                <Row className="justify-content-center">
+                    <Col md={6} lg={4}>
+                        <Card className="shadow-lg rounded">
+                            <Card.Body>
+                                <Card.Title className="text-center mb-4 fw-bold">Login</Card.Title>
+                                <Form onSubmit={authenticate}>
+                                    <Form.Group controlId="email" className="mb-3">
+                                        <Form.Label>Email address</Form.Label>
+                                        <Form.Control
+                                            type="email"
+                                            placeholder="Enter email"
+                                            required
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            className="rounded-pill"
+                                        />
+                                    </Form.Group>
 
-                            <Form.Group controlId="password" className="mb-3">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control
-                                    type="password"
-                                    placeholder="Enter password"
-                                    required
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
-                            </Form.Group>
+                                    <Form.Group controlId="password" className="mb-3">
+                                        <Form.Label>Password</Form.Label>
+                                        <Form.Control
+                                            type="password"
+                                            placeholder="Enter password"
+                                            required
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            className="rounded-pill"
+                                        />
+                                    </Form.Group>
 
-                            <Button variant={isActive ? "primary" : "danger"} type="submit" disabled={!isActive}>
-                                Login
-                            </Button>
+                                    <Button 
+                                        variant={isActive ? "dark" : "secondary"}
+                                        type="submit" 
+                                        className="w-50 rounded-pill"
+                                        disabled={!isActive}
+                                    >
+                                        Login
+                                    </Button>
 
-                            <p>
-                                Don't have an account? <Link to="/register">Register Now</Link>
-                            </p>
-                        </Form>
-                    </Card.Body>
-                </Card>
+                                    <p className="mt-3">
+                                        Don't have an account? 
+                                        <Link to="/register" className="text-dark fw-bold"> Register Now</Link>
+                                    </p>
+                                </Form>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
             )}
         </Container>
     );

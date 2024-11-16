@@ -1,7 +1,7 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { Card } from 'react-bootstrap';
 import MovieDetail from '../components/MovieDetail'; 
-import UserContext from '../context/UserContext'; 
+import "../App.css"
 
 export default function MovieCard({ movie }) {
   const { title, description, genre, director, year, comment } = movie;
@@ -9,7 +9,7 @@ export default function MovieCard({ movie }) {
 
   return (
     <>
-      <Card className="mt-3">
+      <Card className="movie-card mt-3">
         <Card.Body>
           <Card.Title>{title}</Card.Title>
           <Card.Subtitle>Director:</Card.Subtitle>
@@ -24,7 +24,7 @@ export default function MovieCard({ movie }) {
           <Card.Text>{comment}</Card.Text>
         </Card.Body>
         <Card.Footer className="d-flex justify-content-center">
-          <button className="btn btn-info btn-sm" onClick={() => setShowDetailsModal(true)}>View Details</button>
+          <button className="btn btn-secondary btn-sm" onClick={() => setShowDetailsModal(true)}>View Details</button>
         </Card.Footer>
       </Card>
 

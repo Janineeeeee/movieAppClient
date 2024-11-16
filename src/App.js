@@ -1,8 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { UserProvider } from './context/UserContext';
 import AppNavbar from './components/AppNavbar';
-import Container from 'react-bootstrap/Container'
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
@@ -37,7 +36,6 @@ useEffect(() => {
       <UserProvider value={{ user, setUser, unsetUser  }}>
         <Router>
           <AppNavbar />
-          <Container>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
@@ -46,7 +44,6 @@ useEffect(() => {
               <Route path="/addMovie" element={<AddMovie />} />
               <Route path="/getMovies" element={<Movies />} />
             </Routes>
-          </Container>
         </Router>
       </UserProvider>
     </>

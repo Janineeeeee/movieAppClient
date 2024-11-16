@@ -7,7 +7,6 @@ export default function UpdateMovie({ show, handleClose, movie, fetchData }) {
   const { user } = useContext(UserContext);
   const notyf = new Notyf();
 
-  // Initialize state with movie details
   const [formData, setFormData] = useState({
     title: '',
     description: '',

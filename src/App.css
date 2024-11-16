@@ -1,38 +1,159 @@
-.App {
-  text-align: center;
+* {
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: auto;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* App Navbar */
+.navbar .nav-link-custom:hover {
+  color: #ADD8E6; 
+  transition: color 0.3s;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.navbar .nav-link-custom.active {
+  color: #ADD8E6 !important;
+}
+
+/* Home Page */
+.homepage {
+  position: relative;
+  background-image: url('./assets/movie.png'); 
+  background-size: cover; 
+  background-position: center; 
+  height: 100vh; 
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  align-items: center;
+  text-align: center;
+  padding: 20px; 
+  margin: 0;
+  overflow: hidden; 
+}
+
+.homepage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.homepage h1,
+.homepage p {
+  position: relative;
   color: white;
+  font-weight: bold;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+  z-index: 2;
+  padding: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  animation-name: fadeInSlideUp;
+}
+ 
+.homepage .btn {
+  position: relative;
+  z-index: 3;
+  animation: none;
 }
 
-.App-link {
-  color: #61dafb;
+
+.homepage h1 {
+  animation-delay: 0s;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.homepage p {
+  animation-delay: 0.5s;
+}
+
+@keyframes fadeInSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px); 
   }
-  to {
-    transform: rotate(360deg);
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
+}
+
+/* MovieCard */
+.movie-card {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #ffffff;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.movie-card .card-body {
+  background-color: #f8f9fa;
+}
+
+.movie-card .card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.movie-card .card-subtitle {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.movie-card .card-footer {
+  background-color: #f1f1f1;
+  border-top: 1px solid #ddd;
+}
+
+.movie-card .card-footer button {
+  font-size: 0.85rem;
+  background-color: #000000;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.movie-card .card-footer button:hover {
+  background-color: #575c61;
+}
+
+/* Add Movie Button */
+.custom-dark-btn {
+  background-color: #333;
+  border-color: #444;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.custom-dark-btn:hover {
+  background-color: #444;
+  border-color: #555;
+}
+
+.custom-dark-btn:focus, .custom-dark-btn:active {
+  outline: none;
+  box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.4);
+}
+
+.custom-dark-btn:disabled {
+  background-color: #666;
+  border-color: #777;
+  color: #999;
 }

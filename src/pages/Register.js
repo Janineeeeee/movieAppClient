@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import UserContext from '../context/UserContext';
-import { Container, Form, Button, Card, CardBody, CardTitle } from 'react-bootstrap';
+import { Container, Form, Button, Card, Row, Col } from 'react-bootstrap';
 import { Notyf } from 'notyf';
 import { jwtDecode } from 'jwt-decode';
 
@@ -13,15 +13,17 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isActive, setIsActive] = useState(false);
 
+  // Check if the form is complete and if passwords match
   useEffect(() => {
     if ((email !== "" && password !== "" && confirmPassword !== "") && (password === confirmPassword)) {
-      setIsActive(true)
+      setIsActive(true);
     } else {
-      setIsActive(false)
+      setIsActive(false);
     }
-  }, [email, password, confirmPassword])
+  }, [email, password, confirmPassword]);
 
-  function registerUser  (e) {
+  // Handle user registration
+  function registerUser(e) {
     e.preventDefault();
 
     fetch('https://movieapp-api-lms1.onrender.com/users/register', {
@@ -42,7 +44,6 @@ function Register() {
           setEmail('');
           setPassword('');
           setConfirmPassword('');
-
           notyf.success("Registration successful");
 
           const decodedToken = jwtDecode(data.access);
@@ -63,59 +64,69 @@ function Register() {
 
   return (
     <Container className="mt-5 text-center">
-      {(user.id !== null)
-        ?
+      {user.id !== null ? (
         <Navigate to="/getMovies" />
-        :
-        <Card className="w-75 mx-auto">
-          <CardBody>
-            <CardTitle>Register</CardTitle>
-            <Form onSubmit={registerUser  }>
-              <Form.Group controlId="email" className="mb-3">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="Enter email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Form.Group>
+      ) : (
+        <Row className="justify-content-center">
+          <Col md={6} lg={4}>
+            <Card className="shadow-lg rounded">
+              <Card.Body>
+                <Card.Title className="text-center mb-4 fw-bold">Register</Card.Title>
+                <Form onSubmit={registerUser}>
+                  <Form.Group controlId="email" className="mb-3">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control
+                      type="email"
+                      placeholder="Enter email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="rounded-pill"
+                    />
+                  </Form.Group>
 
-              <Form.Group controlId="password" className="mb-3">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Enter password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </Form.Group>
+                  <Form.Group controlId="password" className="mb-3">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      placeholder="Enter password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="rounded-pill"
+                    />
+                  </Form.Group>
 
-              <Form.Group controlId="confirmPassword" className="mb-3">
-                <Form.Label>Confirm Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Confirm password"
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-              </Form.Group>
+                  <Form.Group controlId="confirmPassword" className="mb-3">
+                    <Form.Label>Confirm Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      placeholder="Confirm password"
+                      required
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="rounded-pill"
+                    />
+                  </Form.Group>
 
-              {isActive ?
-                <Button variant="primary" type="submit" id="submitBtn">Submit</Button>
-                :
-                <Button variant="danger" type="submit" id="submitBtn" disabled>Submit</Button>
-              }
-              <p>
-                Already have an account? <Link to="/login">Login Now</Link>
-              </p>
-            </Form>
-          </CardBody>
-        </Card>
-      }
+                  <Button
+                    variant={isActive ? "dark" : "secondary"}
+                    type="submit"
+                    className="w-50 rounded-pill"
+                    disabled={!isActive}
+                  >
+                    Submit
+                  </Button>
+
+                  <p className="mt-3">
+                    Already have an account? <Link to="/login" className="text-dark fw-bold">Login Now</Link>
+                  </p>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      )}
     </Container>
   );
 }

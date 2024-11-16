@@ -24,7 +24,7 @@ export default function DeleteMovie({ movieId, fetchData }) {
       })
       .then(() => {
         notyf.success('Movie Deleted Successfully');
-        fetchData(); // Refresh movie list
+        fetchData();
       })
       .catch((error) => {
         notyf.error(`Error: ${error.message}`);

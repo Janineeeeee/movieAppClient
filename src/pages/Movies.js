@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import MovieCard from '../components/MovieCard';
 import UserContext from '../context/UserContext';
-import { Row, Col, Spinner, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import AdminView from '../components/AdminView';
 
@@ -37,7 +37,7 @@ export default function Movies() {
   }
 
   return (
-    <>
+    <Container>
       {user ? (
         <>
           {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
@@ -69,6 +69,6 @@ export default function Movies() {
           <Link className="btn btn-primary" to={"/login"}>Login to View</Link>
         </>
       )}
-    </>
+    </Container>
   );
 }

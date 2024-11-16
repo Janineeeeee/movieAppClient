@@ -1,8 +1,8 @@
-import { useState, useContext } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { useState } from 'react';
+import { Form, Button, Card, Row, Col, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Notyf } from 'notyf';
-import UserContext from '../context/UserContext';
+import '../App.css'
 
 export default function AddMovie() {
   const navigate = useNavigate();
@@ -39,7 +39,6 @@ export default function AddMovie() {
         notyf.error(`Unsuccessful Movie Creation: ${data.message}`);
       } else {
         notyf.success("Movie Added Successfully");
-        // Reset form fields
         setTitle("");
         setDirector("");
         setYear("");
@@ -56,62 +55,80 @@ export default function AddMovie() {
   }
 
   return (
-    <>
-      <h1 className="my-5 text-center">Add Movie</h1>
-      <Form onSubmit={createMovie}>
-        <Form.Group>
-          <Form.Label>Title:</Form.Label>
-          <Form.Control 
-            type="text" 
-            placeholder="Enter Movie Title" 
-            required 
-            value={title} 
-            onChange={e => setTitle(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Director:</Form.Label>
-          <Form.Control 
-            type="text" 
-            placeholder="Enter Director's Name" 
-            required 
-            value={director} 
-            onChange={e => setDirector(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Year:</Form.Label>
-          <Form.Control 
-            type="number" 
-            placeholder="Enter Release Year" 
-            required 
-            value={year} 
-            onChange={e => setYear(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Description:</Form.Label>
-          <Form.Control 
-            as="textarea" 
-            rows={3} 
-            placeholder="Enter Description" 
-            required 
-            value={description} 
-            onChange={e => setDescription(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Genre:</Form.Label>
-          <Form.Control 
-            type="text" 
-            placeholder="Enter Genre" 
-            required 
-            value={genre} 
-            onChange={e => setGenre(e.target.value)}
-          />
-        </Form.Group>
-        <Button variant="primary" type="submit" className="my-5">Add Movie</Button>
-      </Form>
-    </>
+    <Container className="mt-5 text-center">
+      <Row className="justify-content-center">
+        <Col md={6} lg={4}>
+          <Card className="shadow-lg rounded">
+            <Card.Body>
+              <Card.Title className="text-center mb-4 fw-bold">Add Movie</Card.Title>
+              <Form onSubmit={createMovie}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Title:</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    placeholder="Enter Movie Title" 
+                    required 
+                    value={title} 
+                    onChange={e => setTitle(e.target.value)}
+                    className="rounded-pill"
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Director:</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    placeholder="Enter Director's Name" 
+                    required 
+                    value={director} 
+                    onChange={e => setDirector(e.target.value)}
+                    className="rounded-pill"
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Year:</Form.Label>
+                  <Form.Control 
+                    type="number" 
+                    placeholder="Enter Release Year" 
+                    required 
+                    value={year} 
+                    onChange={e => setYear(e.target.value)}
+                    className="rounded-pill"
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Description:</Form.Label>
+                  <Form.Control 
+                    as="textarea" 
+                    rows={3} 
+                    placeholder="Enter Description" 
+                    required 
+                    value={description} 
+                    onChange={e => setDescription(e.target.value)}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Genre:</Form.Label>
+                  <Form.Control 
+                    type="text" 
+                    placeholder="Enter Genre" 
+                    required 
+                    value={genre} 
+                    onChange={e => setGenre(e.target.value)}
+                    className="rounded-pill"
+                  />
+                </Form.Group>
+                <Button 
+                  variant="dark" 
+                  type="submit" 
+                  className="w-50 mx-auto d-block rounded-pill my-4 custom-dark-btn" 
+                >
+                  Add Movie
+                </Button>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 }
